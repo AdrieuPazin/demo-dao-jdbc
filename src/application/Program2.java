@@ -1,8 +1,9 @@
 package application;
 
+import java.util.List;
+
 import model.dao.DaoFactory;
 import model.dao.DepartmentDao;
-import model.dao.impl.DepartmentDaoJDBC;
 import model.entities.Department;
 
 public class Program2 {
@@ -21,8 +22,17 @@ public class Program2 {
 		System.out.println("Atualizado\n");
 		
 		System.out.println("DELETE");
-		departmentDao.deleteById(6);
+		//departmentDao.deleteById(6);
 		
+		System.out.println("\n FIND BY ID");
+		dep = departmentDao.findById(2);
+		System.out.println(dep);
+		
+		System.out.println("\nFIND ALL");
+		List<Department> list = departmentDao.findAll();
+		for (Department obj : list) {
+			System.out.println(obj);
+		}
 		
 		
 	}

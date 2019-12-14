@@ -5,7 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import db.DB;
 import db.DbException;
@@ -106,12 +109,90 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 
 	@Override
 	public Department findById(Integer id) {
-		return null;
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			String sql = "SELECT * " + 
+					"FROM department WHERE department.Id = ?";
+			
+			st = conn.prepareStatement(sql);
+			st.setInt(1, id);
+			rs = st.executeQuery();
+			
+			//testando se veio algum resultado, se true pega os dados do result e instancia os objetos
+			if (rs.next()) {
+				Department dep = inicializacaoDepartment(rs);
+				
+				return dep;
+				
+			}
+			
+			return null;
+			
+			
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
+
+	}
+
+	private Department inicializacaoDepartment(ResultSet rs) throws SQLException {
+		
+		Department dep = new Department();
+		dep.setId(rs.getInt("Id"));
+		dep.setName(rs.getString("Name"));
+		
+		return dep;
 	}
 
 	@Override
 	public List<Department> findAll() {
-		return null;
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			String sql = "SELECT * " + 
+					"FROM department " +
+					"ORDER BY Name";
+			
+			st = conn.prepareStatement(sql);
+			rs = st.executeQuery();
+			
+			//testando se veio algum resultado, se true pega os dados do result e instancia os objetos
+			List<Department> list  = new ArrayList<>();
+			Map<Integer, Department> map = new HashMap<>();
+			while (rs.next()) {
+			    //verifico se já existe algum departamento com o ID, se for nullo aí sim instancio um novo departamento
+				//Se já existir um departamento, não é instanciado um novo
+				Department dep = map.get(rs.getInt("Id"));
+				
+				if (dep == null) {
+					dep = inicializacaoDepartment(rs);
+					map.put(rs.getInt("Id"), dep);
+				}
+				
+				Department obj = inicializacaoDepartment(rs);
+				list.add(obj);
+				
+				
+			}
+			return list;
+			
+
+			
+			
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
 	}
 
 }
