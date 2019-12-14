@@ -17,10 +17,10 @@ public class Program {
 		System.out.println(seller);
 		System.out.println("=====================\n");
 		
-		Department department = new Department(2, null);
-		List<Seller> list = sellerDao.findByDepartment(department);
+		//Department department = new Department(2, null);
+		//List<Seller> list = sellerDao.findByDepartment(department);
 		
-		
+		List<Seller> list = sellerDao.findAll();
 		for (Seller obj : list) {
 			System.out.println(obj);
 		}
