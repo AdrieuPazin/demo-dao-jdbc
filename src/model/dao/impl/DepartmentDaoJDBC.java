@@ -56,12 +56,52 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 
 	@Override
 	public void update(Department department) {
-
+		PreparedStatement st = null;
+		try {
+			
+			String sql = "UPDATE department " + 
+					"SET Name = ? " + 
+					"WHERE Id = ?";
+			
+			st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			st.setString(1, department.getName());
+			st.setInt(2, department.getId());
+			
+			st.executeUpdate();
+						
+		} catch (SQLException e) {
+			
+			throw new DbException(e.getMessage());
+			
+		} finally {
+			DB.closeStatement(st);
+		}
 	}
 
 	@Override
 	public void deleteById(Integer id) {
-
+		PreparedStatement st = null;
+		try {
+			
+			String sql = "DELETE FROM department " + 
+					"WHERE Id = ?";
+			
+			st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			st.setInt(1, id);
+			
+			int rows = st.executeUpdate();
+						
+			if (rows == 0) {
+				throw new DbException("Registro inexistente");
+			}
+			
+		} catch (SQLException e) {
+			
+			throw new DbException(e.getMessage());
+			
+		} finally {
+			DB.closeStatement(st);
+		}
 	}
 
 	@Override

@@ -11,10 +11,17 @@ public class Program2 {
 
 		
 		DepartmentDao departmentDao = DaoFactory.createDepartmentDao();
-		Department dep = new Department(null, "Food");
-		departmentDao.insert(dep);
-		System.out.println("Id inserido : " + dep.getId());
+		Department dep = new Department(5, "COMIDA");
+		System.out.println("INSERT");
+		//departmentDao.insert(dep);
+		//System.out.println("Id inserido : " + dep.getId());
 		
+		System.out.println("\n UPDATE");
+		//departmentDao.update(dep);
+		System.out.println("Atualizado\n");
+		
+		System.out.println("DELETE");
+		departmentDao.deleteById(6);
 		
 		
 		
