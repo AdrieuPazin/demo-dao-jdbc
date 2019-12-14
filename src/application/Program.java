@@ -41,8 +41,8 @@ public class Program {
 		System.out.println("\n DELETE");
 		Seller seller2 = sellerDao.findById(11);
 		System.out.println(seller2);
-		sellerDao.deleteById(seller2.getId());
-		System.out.println("Deletado");
+		sellerDao.deleteById(10);
+		//System.out.println("Deletado");
 		
 	}
 
